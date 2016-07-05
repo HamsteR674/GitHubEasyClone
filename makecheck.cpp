@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
+#include "makecheck.hpp"
 using namespace std;
 
 bool CheckFir (const char *dirname)
