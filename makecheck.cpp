@@ -34,12 +34,14 @@ int CheckSec (const char *dirname)
 	char *FindEng  = NULL;
 	char *FindRus2 = NULL;
 	char *Findrus2 = NULL;
+	char *Findeng2 = NULL;
 	char Reqrus[16]  = "останов.";
 	char Reqeng[16]  = "error";
 	char ReqRus[16]  = "Останов.";
 	char ReqEng[16]  = "Error";
 	char ReqRus2[16] = "Ошибка";
 	char Reqrus2[16] = "ошибка";
+	char Reqeng2[16] = "fatal";
 	char AllText[100];
 	chdir (dirname);
 	FILE *Log = NULL;
@@ -64,19 +66,19 @@ int CheckSec (const char *dirname)
 		FindEng = strstr (AllText, ReqEng);
 		FindRus2 = strstr (AllText, ReqRus2);
 		Findrus2 = strstr (AllText, Reqrus2);
-		if (Findrus != NULL || Findeng != NULL || FindRus != NULL || FindEng != NULL || FindRus2 != NULL || Findrus2 != NULL)
+		Findeng2 = strstr (AllText, Reqeng2);
+		if (Findrus != NULL || Findeng != NULL || FindRus != NULL || FindEng != NULL || FindRus2 != NULL || Findrus2 != NULL || Findeng2 != NULL)
 		{
 			cout << "Возникли неполадки при компиляции" << endl;
 			return 1;
 		}	
 		i++;
 	}
-	if (Findrus == NULL && Findeng == NULL && FindRus == NULL && FindEng == NULL && FindRus2 != NULL && Findrus2 != NULL)
+	if (Findrus == NULL && Findeng == NULL && FindRus == NULL && FindEng == NULL && FindRus2 != NULL && Findrus2 != NULL && Findeng2 != NULL)
 		cout << "Ошибок не обнаружено" << endl;
 			
-	system ("rm -rf log");
+	//system ("rm -rf log");
 	system ("dir");
-	//printf("\n\n");
 	chdir("..");
 	
 	printf("\n\n");
