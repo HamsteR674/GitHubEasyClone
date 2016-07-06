@@ -1,7 +1,7 @@
-all:  quest.o makecheck.o
-	g++ -c quest.cpp
+all:  GHEasyClone.o makecheck.o
+	g++ -c GHEasyClone.cpp
 	g++ -c makecheck.cpp
-	g++ -o GHEasyClone quest.o makecheck.o
+	g++ -o GHEasyClone GHEasyClone.o makecheck.o
 
 clean:
 	rm -f *.o
