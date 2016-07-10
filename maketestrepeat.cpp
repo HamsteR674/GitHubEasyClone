@@ -4,6 +4,7 @@
 #include <string>
 #include <string.h>
 #include <iostream>
+#include <fstream>
 #include "makecheck.hpp"
 #include "maketestrepeat.hpp"
 using namespace std;
@@ -31,56 +32,75 @@ const char * findrepname(string s){
 }
 
 void reclonegit(string ks, string s){
+	ofstream file("/home/hamstermain/quest/GHLog.txt");
 	chdir("..");
 	system("rm -rf " + ks);
 	system("mkdir " + ks);
 	system("git clone http://github.com/" + s);
-	cout << "cloned #2 " <<  s << endl; 
+	cout << "cloned #2 " << s << endl; 
+	file << "cloned #2 " << s << endl; 
 }
 
 int clone_test_repeat(const char *kcc, string ks, string s){
+ofstream file("/home/hamstermain/quest/GHLog.txt");
 bool maketest = CheckFir(kcc);
 
 	cout << maketest << " done first check" << endl;
+	file << maketest << " done first check" << endl;
 	if (maketest == 0)
 	{
 
-		int build = CheckSec(kcc);
+		int build = CheckSec(kcc); //makecheck.cpp
 		if (build >= 1)
 		{
 			cout << build << " failed second check, trying to reclone" << endl;
+			file << build << " failed second check, trying to reclone" << endl;
 			reclonegit(ks, s);
-			maketest = CheckFir(kcc);
+			maketest = CheckFir(kcc); //makecheck.cpp
 			if (maketest == 0)
 			{
-				int build = CheckSec(kcc);
+				int build = CheckSec(kcc); //makecheck.cpp
 				
 				if (build >= 1)
+				{
 					cout << build << " failed second check, can't make" << endl;
-				else
+					file << build << " failed second check, can't make" << endl;
+			}
+				else{
 					cout << "now " << kcc <<" is working" << endl;
+					file << "now " << kcc <<" is working" << endl;
+				}
 			}
 		}
-		else
+		else{
 			cout << build << " done second check, all good" << endl;
+			file << build << " done second check, all good" << endl;
+		}
 	}
 	else 
 	{
 
 		cout << "no makefile, trying to reclone" << endl;
+		file << "no makefile, trying to reclone" << endl;
 		reclonegit(ks, s);
-		maketest = CheckFir(kcc);
+		maketest = CheckFir(kcc); //makecheck.cpp
 		if (maketest == 0)
 		{
-			int build = CheckSec(kcc);
+			int build = CheckSec(kcc); //makecheck.cpp
 
-			if (build >= 1)
+			if (build >= 1){
 				cout << build << " failed second check, can't make" << endl;
+				file << build << " failed second check, can't make" << endl;
+			}
 			else
 				cout << "now " << kcc <<" is working" << endl;
+				file << "now " << kcc <<" is working" << endl;
 		}
 		else
 			cout << "no makefile again, can't make" << endl;
+			file << "no makefile again, can't make" << endl;
 	}
+	chdir("..");
+	file.close();
 	return 0;
 }

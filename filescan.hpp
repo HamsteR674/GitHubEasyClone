@@ -1,3 +1,5 @@
+#ifndef filescan_h
+#define filescan_h
 using namespace std;
 
 struct Person { 
@@ -5,11 +7,13 @@ string name;
 string github; 
 string group; 
 string repository; 
-string catalogue;
+string catalog;
 string grc;
 }; 
 
-Person group[500]; 
-int group_max_num=0; 
+extern Person group[500];
+extern int group_max_num;
 
 int filescan();
+
+#endif
