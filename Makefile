@@ -1,8 +1,9 @@
-all:  GitHubEasyClone.o makecheck.o maketestrepeat.o
-	g++ -c GitHubEasyClone.cpp
+all:  GHEasyClone.o makecheck.o maketestrepeat.o filescan.o
+	g++ -c GHEasyClone.cpp
 	g++ -c makecheck.cpp
 	g++ -c maketestrepeat.cpp
-	g++ -o GHEasyClone GitHubEasyClone.o makecheck.o maketestrepeat.o
+	g++ -c filescan.cpp
+	g++ -o GHEasyClone GHEasyClone.o makecheck.o maketestrepeat.o filescan.o
 
 clean:
 	rm -f *.o
