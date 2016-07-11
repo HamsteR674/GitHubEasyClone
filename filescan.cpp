@@ -12,7 +12,8 @@ int group_max_num = 0;
 
 int filescan(){ 
 setlocale(LC_ALL, "rus"); 
-ofstream file("/home/hamstermain/quest/GHLog.txt");
+fstream file;
+file.open("GHLog.txt", fstream::out|fstream::app);
 ifstream fin("gitclonefile.csv");
 cout << "found gitclonefile" << endl;
 file << "found gitclonefile" << endl;
@@ -34,13 +35,13 @@ group[z].grc += "/" ;
 group[z].grc += group[z].repository;
 //group[z].grc += "/" ;
 //group[z].grc += group[z].catalog;
-cout << "grc = " << group[z].grc << endl;
-file << "grc = " << group[z].grc << endl;
+cout << z << " grc = " << group[z].grc << endl;
+file << z << " grc = " << group[z].grc << endl;
 z = z+1;
 } 
 group_max_num = z;
 cout << group_max_num << endl;
-file << group_max_num << endl;
+file << group_max_num << " lines found" << endl;
 file.close();
 return 0;
 } 

@@ -5,35 +5,47 @@
 #include <string.h>
 #include <iostream>
 #include "makecheck.hpp"
+#include "maketestrepeat.hpp"
 using namespace std;
 
 bool CheckFir (const char *dirname)
 {
-	ofstream file("GHLog.txt");
+	string buf;
+	setlocale(LC_ALL, "rus"); 
+	chdir("..");
+	fstream file;
+	file.open("../../../GHLog.txt", fstream::out|fstream::app);
+	chdir("github_clones");
 	bool ans = 1;
 	chdir (dirname);
-	file << "Введено название папки: " << dirname << endl;
-	printf("Введено название папки: %s\n", dirname);
+	file << "catalog: " << dirname << endl;
+	printf("catalog: %s\n", dirname);
 	system ("dir");
 	printf("\n\n");
 	ans = access ("Makefile", 4);
 	if (ans == 0){
 		printf ("makefile есть \n\n\n");
-		file << "makefile есть " << endl;
+		buf += " has makefile\n";
+		//writelog(buf);
 	}
 	else{
 		printf ("makefile нет \n\n\n");
-		file << "makefile есть" << endl;
+		buf += " no makefile\n";
+		//writelog(buf);
 	}
 	if (ans == -1)
 		ans = 1;
+	file << buf << endl;
+	//writelog(buf);
 	file.close();
 	return ans;
 }
 
 int CheckSec (const char *dirname)
 {
-	ofstream file("/home/hamstermain/quest/GHLog.txt");
+	string buf;
+	fstream file;
+	file.open("../../GHLog.txt", fstream::out|fstream::app);
 	int MakeError, j, i = 0;
 	char *Findrus  = NULL;
 	char *Findeng  = NULL;
@@ -62,7 +74,8 @@ int CheckSec (const char *dirname)
 		MakeError = -1;
 	else {
 		printf ("Работа с логом началась\n\n");
-		file << "Работа с логом началась" << endl;
+		buf += " working with log\n ";
+		//writelog(buf);
 	}
 
 	while (getc (Log) > 0 && i < 100)
@@ -79,15 +92,18 @@ int CheckSec (const char *dirname)
 		if (Findrus != NULL || Findeng != NULL || FindRus != NULL || FindEng != NULL || FindRus2 != NULL || Findrus2 != NULL || Findeng2 != NULL)
 		{
 			cout << "Возникли неполадки при компиляции" << endl;
-			file << "Возникли неполадки при компиляции" << endl;
+			buf += "Compilation fault\n";
+
 			return 1;
 		}	
 		i++;
 	}
 	if (Findrus == NULL && Findeng == NULL && FindRus == NULL && FindEng == NULL && FindRus2 != NULL && Findrus2 != NULL && Findeng2 != NULL){
 		cout << "Ошибок не обнаружено" << endl;
-		file << "Ошибок не обнаружено" << endl;
+		buf += "No error found\n";
 	}
+	//writelog(buf);
+	file << buf << endl;
 	//system ("rm -rf log");
 	system ("dir");
 	chdir("..");

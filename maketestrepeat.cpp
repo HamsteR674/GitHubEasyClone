@@ -32,7 +32,8 @@ const char * findrepname(string s){
 }
 
 void reclonegit(string ks, string s){
-	ofstream file("/home/hamstermain/quest/GHLog.txt");
+	fstream file;
+	file.open("../../GHLog.txt", fstream::out|fstream::app);
 	chdir("..");
 	system("rm -rf " + ks);
 	system("mkdir " + ks);
@@ -41,12 +42,22 @@ void reclonegit(string ks, string s){
 	file << "cloned #2 " << s << endl; 
 }
 
-int clone_test_repeat(const char *kcc, string ks, string s){
-ofstream file("/home/hamstermain/quest/GHLog.txt");
-bool maketest = CheckFir(kcc);
+int writelog(string s){
+	fstream file;
+	file.open("../GHLog.txt", fstream::out|fstream::app);
+	file << s << endl;
+	file.close();
+	return 0;
 
+}
+
+int clone_test_repeat(const char *kcc, string ks, string s){
+string buf;
+bool maketest = CheckFir(kcc);
+fstream file;
+	 file.open("../../GHLog.txt", fstream::out|fstream::app);
 	cout << maketest << " done first check" << endl;
-	file << maketest << " done first check" << endl;
+	buf += "done first check\n";
 	if (maketest == 0)
 	{
 
@@ -54,7 +65,7 @@ bool maketest = CheckFir(kcc);
 		if (build >= 1)
 		{
 			cout << build << " failed second check, trying to reclone" << endl;
-			file << build << " failed second check, trying to reclone" << endl;
+			buf += " failed second check, trying to reclone\n";
 			reclonegit(ks, s);
 			maketest = CheckFir(kcc); //makecheck.cpp
 			if (maketest == 0)
@@ -64,24 +75,27 @@ bool maketest = CheckFir(kcc);
 				if (build >= 1)
 				{
 					cout << build << " failed second check, can't make" << endl;
-					file << build << " failed second check, can't make" << endl;
+					buf += " failed second check, can't make\n";
+
 			}
 				else{
 					cout << "now " << kcc <<" is working" << endl;
-					file << "now " << kcc <<" is working" << endl;
+					buf += " now it works\n";
+
 				}
 			}
 		}
 		else{
 			cout << build << " done second check, all good" << endl;
-			file << build << " done second check, all good" << endl;
+			buf += " done second check, all good\n";
+
 		}
 	}
 	else 
 	{
 
 		cout << "no makefile, trying to reclone" << endl;
-		file << "no makefile, trying to reclone" << endl;
+		buf += " no makefile, trying to reclone\n";
 		reclonegit(ks, s);
 		maketest = CheckFir(kcc); //makecheck.cpp
 		if (maketest == 0)
@@ -90,17 +104,18 @@ bool maketest = CheckFir(kcc);
 
 			if (build >= 1){
 				cout << build << " failed second check, can't make" << endl;
-				file << build << " failed second check, can't make" << endl;
+				buf += " no makefile, trying to reclone\n";
 			}
 			else
 				cout << "now " << kcc <<" is working" << endl;
-				file << "now " << kcc <<" is working" << endl;
+				buf += " now it works\n";
 		}
 		else
 			cout << "no makefile again, can't make" << endl;
-			file << "no makefile again, can't make" << endl;
+			buf += " no makefile again, can't make\n";
 	}
-	chdir("..");
+	file << buf << endl;
 	file.close();
+	chdir("..");
 	return 0;
 }

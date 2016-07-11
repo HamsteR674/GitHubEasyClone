@@ -8,26 +8,39 @@
 #include "maketestrepeat.hpp"
 #include "filescan.hpp"
 using namespace std;
-ofstream file("GHLog.txt");
+
 
 int main() // struct group included in filescan.hpp
 {
-	
+	fstream file;
+	setlocale(LC_ALL, "rus"); 
+	string buf;
 	string ks;
 	const char *kcc;
 	string s ;
 	filescan();
 	system("mkdir github_clones");
 	chdir("github_clones");
+
 	for (int z = 0; z < group_max_num; z++)
 	{
+
 		kcc = group[z].repository.c_str();
 		system("git clone http://github.com/" + group[z].grc /*+ " 2> log.txt" */);
-		system("git clone http://github.com/" + group[z].grc + " 2> GHLog.txt" );
+		system("git clone http://github.com/" + group[z].grc + " 2> log.txt" );
+		chdir("..");
+		file.open("GHLog.txt", fstream::out|fstream::app);
 		cout << "stole " <<  group[z].grc << endl; 
-		file << "stole " <<  group[z].grc << endl; 
+		buf = "stole ";
+		buf += group[z].grc;
+		file << buf << endl;
+		file << "rep number " << z << endl;
+		file.close();
+		chdir("github_clones");
 		clone_test_repeat(kcc, group[z].repository, group[z].grc); //maketestrepeat.cpp
+		
 	}
-	file.close();
+	file.open("GHLog.txt", fstream::out|fstream::app);
+	file << "_______________________________________" << endl << endl;
 	return 0; 
 }
