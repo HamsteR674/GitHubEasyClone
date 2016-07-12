@@ -14,6 +14,7 @@ int main() // struct group included in filescan.hpp
 {
 	fstream file;
 	setlocale(LC_ALL, "rus"); 
+	fstream report;
 	string buf;
 	string ks;
 	const char *kcc;
@@ -37,10 +38,13 @@ int main() // struct group included in filescan.hpp
 		file << "rep number " << z << endl;
 		file.close();
 		chdir("github_clones");
-		clone_test_repeat(kcc, group[z].repository, group[z].grc); //maketestrepeat.cpp
-		
+		report.open("../final_report.txt", fstream::out|fstream::app);
+		report << group[z].name << ", " << group[z].group << ", " << group[z].github << ", " << group[z].repository << ", " << group[z].catalog << ", ";
+		report.close();
+		clone_test_repeat(kcc, group[z].repository, group[z].grc); //maketestrepeat.cpp	
 	}
 	file.open("GHLog.txt", fstream::out|fstream::app);
+
 	file << "_______________________________________" << endl << endl;
 	return 0; 
 }

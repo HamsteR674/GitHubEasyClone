@@ -14,7 +14,7 @@ int system(string cmd)
 return system(cmd.c_str());
 }
 
-const char * findrepname(string s){
+/*const char * findrepname(string s){
 	string k;
 	const char *kc;
 	int e;
@@ -29,7 +29,7 @@ const char * findrepname(string s){
 		k += s[e + i];
 		kc = k.c_str();
 	return kc;
-}
+}*/
 
 void reclonegit(string ks, string s){
 	fstream file;
@@ -55,12 +55,14 @@ int clone_test_repeat(const char *kcc, string ks, string s){
 string buf;
 bool maketest = CheckFir(kcc);
 fstream file;
+fstream report;
 	 file.open("../../GHLog.txt", fstream::out|fstream::app);
+	 report.open("../../final_report.txt", fstream::out|fstream::app);
 	cout << maketest << " done first check" << endl;
 	buf += "done first check\n";
 	if (maketest == 0)
 	{
-
+		report << " 1st ok,";
 		int build = CheckSec(kcc); //makecheck.cpp
 		if (build >= 1)
 		{
@@ -76,18 +78,20 @@ fstream file;
 				{
 					cout << build << " failed second check, can't make" << endl;
 					buf += " failed second check, can't make\n";
+					report << " 2nd NO, failed" << endl;
 
 			}
 				else{
 					cout << "now " << kcc <<" is working" << endl;
 					buf += " now it works\n";
-
+					report << " 2nd ok, all good" << endl;
 				}
 			}
 		}
 		else{
 			cout << build << " done second check, all good" << endl;
 			buf += " done second check, all good\n";
+			report << " 2nd ok, all good" << endl;
 
 		}
 	}
@@ -104,15 +108,18 @@ fstream file;
 
 			if (build >= 1){
 				cout << build << " failed second check, can't make" << endl;
-				buf += " no makefile, trying to reclone\n";
+				buf += " no makefile, can't make\n";
+				report << " 2nd NO, failed" << endl;
 			}
 			else
 				cout << "now " << kcc <<" is working" << endl;
 				buf += " now it works\n";
+				report << " 2nd ok, all good" << endl;
 		}
 		else
 			cout << "no makefile again, can't make" << endl;
 			buf += " no makefile again, can't make\n";
+			report << " 1st no, failed" << endl;
 	}
 	file << buf << endl;
 	file.close();
